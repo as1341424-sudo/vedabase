@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bhaktivedanta VedaBase 2003</title>
+  <meta name="description" content="Complete Vedic Scriptures — 1.6M+ records by His Divine Grace A.C. Bhaktivedanta Swami Prabhupāda" />
+  <link rel="stylesheet" href="styles/global.css?v=12" />
+  <style>
+    /* Inline critical — loading screen always shows even before stylesheet loads */
+    #loading-screen { position:fixed; inset:0; background:linear-gradient(160deg,#FFF8EC,#FFE4B0,#FFF0D6); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px; z-index:9999; }
+    .loading-lotus  { font-size:62px; animation:lp-pulse 2.4s ease-in-out infinite; filter:drop-shadow(0 4px 12px rgba(224,123,0,.4)); }
+    @keyframes lp-pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.09)} }
+    .loading-title  { font-size:1.6rem; font-weight:700; color:#5C0F0F; font-family:'Palatino Linotype',Palatino,serif; letter-spacing:.04em; }
+    .loading-bar-wrap { width:300px; height:4px; background:rgba(92,15,15,.15); border-radius:99px; overflow:hidden; }
+    .loading-bar { height:100%; background:linear-gradient(90deg,#7B1F1F,#E07B00,#B8860B); border-radius:99px; animation:lp 2.8s ease-in-out forwards; }
+    @keyframes lp { from{width:3%} to{width:100%} }
+    .loading-msg { font-size:.82rem; color:rgba(91,30,0,.65); font-family:'Segoe UI',system-ui,sans-serif; letter-spacing:.06em; }
+  </style>
+</head>
+<body>
+
+<!-- ══ Loading Screen ═══════════════════════════════════════════ -->
+<div id="loading-screen">
+  <img src="assets/iskcon_logo.svg" class="loading-iskcon-logo" alt="ISKCON Logo" />
+  <div class="loading-title">Bhaktivedanta VedaBase</div>
+  <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+  <div class="loading-msg" id="loading-msg">Initializing…</div>
+</div>
+
+<!-- ══ App Shell ════════════════════════════════════════════════ -->
+<div id="app" style="opacity:0">
+
+  <!-- ── Header ──────────────────────────────────────────────── -->
+  <header id="header">
+    <!-- Brand -->
+    <div class="hdr-brand">
+      <button class="icon-btn" id="sidebar-toggle" title="Toggle Sidebar" style="width:30px;height:30px;font-size:15px">☰</button>
+      <img src="assets/iskcon_logo.svg" class="hdr-logo" alt="ISKCON Logo" />
+      <div class="hdr-titles">
+        <div class="hdr-title">Bhaktivedanta VedaBase</div>
+        <div class="hdr-subtitle">A.C. Bhaktivedanta Swami Prabhupāda</div>
+      </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="hdr-search-wrap">
+      <span class="hdr-search-ico">🔍</span>
+      <input
+        type="text"
+        id="header-search-input"
+        class="hdr-search"
+        placeholder="Search scriptures, Sanskrit, teachings…"
+        autocomplete="off" spellcheck="false"
+        title="Open search (F2)"
+        readonly
+      />
+      <span class="hdr-search-kbd">F2</span>
+    </div>
+
+    <!-- Action buttons + tools -->
+    <div class="hdr-actions">
+      <button class="hdr-btn active" id="tab-doc"     onclick="App.switchView('doc')"     title="Document view">📜 Read</button>
+      <button class="hdr-btn"        id="tab-chapter" onclick="App.switchView('chapter')" title="Chapter filter">🔬 Filter</button>
+
+      <!-- Navigation -->
+      <div class="nav-grp" title="Back / Forward">
+        <button class="nav-btn" id="btn-back"    onclick="App.historyBack()"    title="Go Back (F5 / Alt+←)">◀</button>
+        <button class="nav-btn" id="btn-forward" onclick="App.historyForward()" title="Go Forward (F6 / Alt+→)">▶</button>
+      </div>
+
+      <!-- Hit navigation -->
+      <div class="hit-nav-grp" title="Jump between search hits">
+        <button class="nav-btn" id="btn-prev-hit" onclick="HitNav.prev()" title="Previous Hit (F3)">▲</button>
+        <span id="hit-nav-info" class="hit-nav-info"></span>
+        <button class="nav-btn" id="btn-next-hit" onclick="HitNav.next()" title="Next Hit (F4)">▼</button>
+      </div>
+
+      <!-- Zoom -->
+      <div class="zoom-grp" title="Zoom (Ctrl+Scroll)">
+        <button class="zoom-btn" onclick="Zoom.out()" title="Zoom Out (Ctrl+-)">A-</button>
+        <span id="zoom-level" class="zoom-level" onclick="Zoom.reset()" title="Click to reset zoom">100%</span>
+        <button class="zoom-btn" onclick="Zoom.in()" title="Zoom In (Ctrl+=)">A+</button>
+      </div>
+
+      <div class="hdr-stat"><strong id="stat-texts">–</strong> records</div>
+    </div>
+  </header>
+
+  <!-- ── Sidebar ────────────────────────────────────────────────── -->
+  <aside id="sidebar">
+    <div class="sb-header">
+      <span class="sb-title">Contents</span>
+      <div style="display:flex;gap:3px">
+        <button class="icon-btn" id="sidebar-expand-all"   title="Expand All">⊞</button>
+        <button class="icon-btn" id="sidebar-collapse-all" title="Collapse All">⊟</button>
+      </div>
+    </div>
+    <div class="sb-search-wrap">
+      <input type="text" id="sidebar-filter-input" class="sb-search" placeholder="Filter books…" autocomplete="off" />
+    </div>
+    <div id="sidebar-tree" role="tree" aria-label="Scripture navigation"></div>
+    <div id="sb-resize" title="Drag to resize"></div>
+  </aside>
+
+  <!-- ── Main Content ───────────────────────────────────────────── -->
+  <main id="main-content">
+
+    <!-- Toolbar: breadcrumb + document tools -->
+    <div id="toolbar">
+      <div id="breadcrumb" aria-label="Current location"></div>
+
+      <!-- Document tools bar -->
+      <div class="doc-tools" id="doc-tools">
+        <!-- Jump to record -->
+        <div class="jump-to-bar" title="Jump to record number (F5)">
+          <span class="jump-to-icon">⚡</span>
+          <input type="number" id="jump-recid-input" class="jump-to-input" placeholder="Go to record…" min="1" autocomplete="off" spellcheck="false" />
+          <button class="jump-to-btn" id="jump-recid-btn" title="Jump (Enter)">↵</button>
+        </div>
+
+        <div class="tool-sep"></div>
+
+        <!-- Annotation tools -->
+        <button class="tool-btn" id="btn-bookmark"  onclick="Bookmarks.prompt()"    title="Bookmark this location (Ctrl+M)">📌 Bookmark</button>
+        <button class="tool-btn" id="btn-note"      onclick="Notes.open()"          title="Add a note (Ctrl+N)">📝 Note</button>
+        <button class="tool-btn" id="btn-highlight" onclick="Highlighter.trigger()" title="Highlight selection (Ctrl+H)">🖊️ Highlight</button>
+        <button class="tool-btn" id="btn-copy-ref"  onclick="copyWithReference()"   title="Copy selection with reference">📋 Copy+Ref</button>
+
+        <div class="tool-sep"></div>
+
+        <!-- Panel toggles -->
+        <button class="tool-btn" id="btn-bookmarks-panel" onclick="Bookmarks.toggle()" title="View all bookmarks">📌 Bookmarks</button>
+      </div>
+    </div>
+
+    <!-- ── Document View Panel ──────────────────────────────────── -->
+    <div id="panel-doc" class="view-panel active">
+
+      <!-- Welcome screen (shown until first navigation) -->
+      <div id="welcome" style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:22px;padding:40px;text-align:center;background:radial-gradient(ellipse at center,rgba(212,160,23,.04) 0%,transparent 65%)">
+        <img src="assets/iskcon_logo.svg" class="wc-iskcon-logo" alt="ISKCON Logo" />
+        <div class="wc-title">Bhaktivedanta VedaBase 2003</div>
+        <div class="wc-sub">His Divine Grace A.C. Bhaktivedanta Swami Prabhupāda</div>
+        <div class="wc-quote" id="welcome-quote">Loading…</div>
+        <div class="wc-stats">
+          <div class="stat-item"><div class="stat-n" id="ws-texts">–</div><div class="stat-l">Text Records</div></div>
+          <div class="stat-item"><div class="stat-n" id="ws-contents">–</div><div class="stat-l">Tree Nodes</div></div>
+          <div class="stat-item"><div class="stat-n" id="ws-popup">–</div><div class="stat-l">Glossary</div></div>
+        </div>
+        <div class="wc-shortcuts">
+          <div class="sc-chip"><span class="key">F2</span>&nbsp;Search</div>
+          <div class="sc-chip" onclick="App.focusSidebar()"><span class="key">F3</span>&nbsp;Prev Hit</div>
+          <div class="sc-chip" onclick="HitNav.next()"><span class="key">F4</span>&nbsp;Next Hit</div>
+          <div class="sc-chip" onclick="App.historyBack()"><span class="key">F5</span>&nbsp;Go Back</div>
+          <div class="sc-chip" onclick="App.historyForward()"><span class="key">F6</span>&nbsp;Forward</div>
+          <div class="sc-chip" onclick="Bookmarks.prompt()"><span class="key">Ctrl+M</span>&nbsp;Bookmark</div>
+          <div class="sc-chip" onclick="Notes.open()"><span class="key">Ctrl+N</span>&nbsp;Note</div>
+          <div class="sc-chip" onclick="Highlighter.trigger()"><span class="key">Ctrl+H</span>&nbsp;Highlight</div>
+        </div>
+      </div>
+
+      <!-- Document viewer (hidden until first nav) -->
+      <div id="doc-viewer" class="hidden user-select-text" role="main">
+        <div id="scroll-top-sentinel"    class="scroll-sentinel"><div class="spinner hidden" id="top-spinner"></div></div>
+        <div id="doc-content"></div>
+        <div id="scroll-bottom-sentinel" class="scroll-sentinel"><div class="spinner hidden" id="bottom-spinner"></div></div>
+      </div>
+    </div>
+
+    <!-- ── Chapter Filter Panel ──────────────────────────────────── -->
+    <div id="panel-chapter" class="view-panel">
+      <div style="display:flex;flex-direction:column;height:100%;overflow:hidden">
+        <div class="ch-controls">
+          <span class="ch-filter-title">🔬 Show:</span>
+          <div class="ch-checks">
+            <label class="ch-check"><input type="checkbox" value="verse" /> Verses</label>
+            <label class="ch-check"><input type="checkbox" value="word"  /> Word-for-Word</label>
+            <label class="ch-check"><input type="checkbox" value="translation" /> Translation</label>
+            <label class="ch-check"><input type="checkbox" value="purport"     /> Purport</label>
+            <label class="ch-check"><input type="checkbox" value="heading"     /> Headings</label>
+          </div>
+          <div class="ch-nav">
+            <button class="ch-nav-btn" onclick="ChapterFilter.navigateChapter('prev')">← Prev</button>
+            <span id="chapter-nav-label" style="font-size:.78rem;color:var(--text-muted)">Select a chapter</span>
+            <button class="ch-nav-btn" onclick="ChapterFilter.navigateChapter('next')">Next →</button>
+          </div>
+        </div>
+        <div id="chapter-content" class="user-select-text" role="main"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Status Bar ────────────────────────────────────────────── -->
+  <footer id="statusbar">
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-msg">Loading…</span>
+      <span id="status-recid" style="color:var(--text-dim);font-family:var(--font-mono);font-size:var(--text-xs)"></span>
+    </div>
+    <div class="maha-mantra">
+      Hare Kṛṣṇa Hare Kṛṣṇa Kṛṣṇa Kṛṣṇa Hare Hare · Hare Rāma Hare Rāma Rāma Rāma Hare Hare
+    </div>
+  </footer>
+
+</div><!-- #app -->
+
+<!-- ══ Bookmarks Panel (slides in from right) ══════════════════════ -->
+<div id="bookmarks-panel">
+  <div class="bm-panel-hdr">
+    <span class="bm-panel-title">📌 Bookmarks</span>
+    <button class="bm-close-btn" onclick="Bookmarks.close()" title="Close">✕</button>
+  </div>
+  <div id="bm-list" class="bm-list"></div>
+  <div class="bm-panel-footer">
+    <button class="bm-add-btn" onclick="Bookmarks.prompt()">+ Add Bookmark</button>
+    <button class="bm-clear-btn" onclick="Bookmarks.clearAll()">Clear All</button>
+  </div>
+</div>
+
+<!-- ══ Notes Dialog ════════════════════════════════════════════════ -->
+<div id="notes-overlay" onclick="if(event.target===this)Notes.close()">
+  <div id="notes-dialog">
+    <div class="notes-dlg-hdr">
+      <span>📝 Notes — <span id="note-dialog-recid"></span></span>
+      <button class="notes-close" onclick="Notes.close()">✕</button>
+    </div>
+    <div id="note-list" class="note-list"></div>
+    <div class="note-input-wrap">
+      <textarea id="note-textarea" placeholder="Write your note, annotation, or reflection…" rows="4"></textarea>
+      <div class="note-actions">
+        <button class="note-save-btn" onclick="Notes.save()">💾 Save Note</button>
+        <button class="note-cancel-btn" onclick="Notes.close()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Highlighter Color Picker ════════════════════════════════════ -->
+<div id="hl-picker" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="hl-picker-inner">
+    <div class="hl-label">Choose highlight color:</div>
+    <div class="hl-colors">
+      <button class="hl-color" style="background:#FFE566" onclick="Highlighter.apply('yellow')" title="Yellow">🟡</button>
+      <button class="hl-color" style="background:#B8F0B0" onclick="Highlighter.apply('green')"  title="Green">🟢</button>
+      <button class="hl-color" style="background:#A8D8F0" onclick="Highlighter.apply('blue')"   title="Blue">🔵</button>
+      <button class="hl-color" style="background:#F5B8C4" onclick="Highlighter.apply('pink')"   title="Pink">🩷</button>
+      <button class="hl-color" style="background:#FFD4A0" onclick="Highlighter.apply('orange')" title="Orange">🟠</button>
+      <button class="hl-remove" onclick="Highlighter.apply('none')" title="Remove highlight">✕</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Search Overlay ════════════════════════════════════════════ -->
+<div id="search-overlay" role="dialog" aria-modal="true" onclick="if(event.target===this)SearchPanel.close()">
+  <div id="search-modal">
+
+    <!-- Search input row -->
+    <div class="search-hdr">
+      <span class="search-ico">🔍</span>
+      <input type="text" id="search-input"
+        placeholder="Search scriptures, Sanskrit, teachings…"
+        autocomplete="off" spellcheck="false"
+        aria-label="Search scriptures" />
+      <label class="search-scope-lbl" title="Limit search to selected books in sidebar">
+        <input type="checkbox" id="search-scoped" /> Scoped
+      </label>
+      <button class="search-close" onclick="SearchPanel.close()" title="Close (Esc)">✕</button>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="search-filter-bar" id="search-filter-bar">
+      <button class="sf-btn active" data-filter="">All</button>
+      <button class="sf-btn" data-filter="verse">📜 Verses</button>
+      <button class="sf-btn" data-filter="synonyms">📖 Synonyms</button>
+      <button class="sf-btn" data-filter="translation">🔤 Translation</button>
+      <button class="sf-btn" data-filter="purport">✍️ Purport</button>
+    </div>
+
+    <!-- Autocomplete chips -->
+    <div id="suggest-chips" class="suggest-chips">
+      <div id="suggest-list" class="suggest-list"></div>
+    </div>
+
+    <!-- Results list -->
+    <div id="search-results">
+      <div class="search-empty-state">
+        <div class="ses-icon">🙏</div>
+        <div class="ses-title">Search 1.6M+ records</div>
+        <div class="ses-hint">Try: <em>Krishna</em> · <em>yoga</em> · <em>dharma</em> · <em>Bhagavad-gita</em></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="search-ftr">
+      <div id="search-count" class="search-count"></div>
+      <div class="search-kbds">
+        <span class="kbd">↑↓</span> Navigate &nbsp;
+        <span class="kbd">↵</span> Jump &nbsp;
+        <span class="kbd">Esc</span> Close &nbsp;
+        <span class="kbd">F3/F4</span> Prev/Next Hit
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ Popup Glossary ════════════════════════════════════════════ -->
+<div id="popup-overlay">
+  <div class="popup-title" id="popup-title"></div>
+  <div id="popup-body"></div>
+</div>
+
+
+<!-- ══ Jump-Link Full-Screen Reader Modal ════════════════════ -->
+<div id="jl-modal" role="dialog" aria-modal="true" aria-label="Linked Scripture">
+  <div id="jl-modal-header">
+    <button id="jl-back-btn" title="Go back (Backspace)">
+      &#8592; Back
+    </button>
+    <div id="jl-modal-title"></div>
+    <button id="jl-close-btn" title="Close (Esc)">&#x2715;</button>
+  </div>
+  <div id="jl-modal-body">
+    <div id="jl-modal-content"></div>
+  </div>
+</div>
+
+<!-- ══ Toast Container ══════════════════════════════════════════ -->
+<div id="toast-container"></div>
+
+<!-- ══ Scripts (order matters) ══════════════════════════════════ -->
+<script src="api_bridge.js?v=12"></script>
+<script src="components/features.js?v=12"></script>
+<script src="components/sidebar_tree.js?v=12"></script>
+<script src="components/doc_viewer.js?v=12"></script>
+<script src="components/search_panel.js?v=12"></script>
+<script src="components/chapter_filter.js?v=12"></script>
+<script src="main.js?v=12"></script>
+
+</body>
+</html>

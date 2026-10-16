@@ -1,0 +1,17 @@
+__pycache__/ 
+*.pyc 
+data/*.db-shm 
+data/*.db-wal 
+__pycache__/
+*.pyc
+data/*.db-shm
+data/*.db-wal
+data/folio.db
+__pycache__/
+*.pyc
+*.db-shm
+*.db-wal
+data/folio.db
+.env
+.venv/
+venv/

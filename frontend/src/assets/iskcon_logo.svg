@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 420" width="100%" height="100%">
+  <g fill="none" stroke="#B33B24" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Top twin tilak stems -->
+    <path d="M 234 10 C 234 80 240 185 242 220" stroke-width="5.5"/>
+    <path d="M 266 10 C 266 80 260 185 258 220" stroke-width="5.5"/>
+    <path d="M 242 220 C 246 232 254 232 258 220" stroke-width="4"/>
+
+    <!-- Central Tilak Drop -->
+    <path d="M 250 225 C 232 245 226 270 250 290 C 274 270 268 245 250 225 Z" fill="#B33B24" stroke="none"/>
+
+    <!-- Left Lotus Petals -->
+    <path d="M 242 215 C 215 150 175 60 166 30 C 205 60 230 130 246 190" stroke-width="4.5"/>
+    <path d="M 242 220 C 190 155 125 95 110 70 C 150 100 200 170 238 215" stroke-width="4.5"/>
+    <path d="M 238 230 C 160 180 85 145 60 135 C 105 160 175 205 234 238" stroke-width="4.5"/>
+    <path d="M 236 240 C 140 210 50 195 28 200 C 70 215 150 230 230 248" stroke-width="4.5"/>
+    <path d="M 235 250 C 145 255 60 270 45 285 C 80 280 165 265 234 256" stroke-width="4.5"/>
+
+    <!-- Right Lotus Petals -->
+    <path d="M 258 215 C 285 150 325 60 334 30 C 295 60 270 130 254 190" stroke-width="4.5"/>
+    <path d="M 258 220 C 310 155 375 95 390 70 C 350 100 300 170 262 215" stroke-width="4.5"/>
+    <path d="M 262 230 C 340 180 415 145 440 135 C 395 160 325 205 266 238" stroke-width="4.5"/>
+    <path d="M 264 240 C 360 210 450 195 472 200 C 430 215 350 230 270 248" stroke-width="4.5"/>
+    <path d="M 265 250 C 355 255 440 270 455 285 C 420 280 335 265 266 256" stroke-width="4.5"/>
+  </g>
+
+  <!-- Top Line -->
+  <line x1="75" y1="315" x2="425" y2="315" stroke="#B33B24" stroke-width="5" stroke-linecap="round"/>
+
+  <!-- ISKCON Text -->
+  <text x="250" y="375" font-family="'Cinzel', 'Times New Roman', Georgia, serif" font-weight="700" font-size="56" letter-spacing="18" fill="#B33B24" text-anchor="middle">ISKCON</text>
+
+  <!-- Registered Trademark symbol ® -->
+  <g transform="translate(430, 328)">
+    <circle cx="9" cy="9" r="8.5" fill="none" stroke="#B33B24" stroke-width="1.8"/>
+    <text x="9" y="12" font-family="sans-serif" font-weight="bold" font-size="10" fill="#B33B24" text-anchor="middle">R</text>
+  </g>
+
+  <!-- Bottom Line -->
+  <line x1="75" y1="396" x2="425" y2="396" stroke="#B33B24" stroke-width="5" stroke-linecap="round"/>
+</svg>

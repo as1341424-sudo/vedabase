@@ -1,0 +1,70 @@
+﻿=== ALL UNIQUE FOLIO TAG TYPES ===
+  BC                 9,035
+  PT                 7,838
+  CS                 4,806
+  PS                 4,678
+  EL                 4,670
+  IN                 4,606
+  BD                 4,072
+  CR                 3,933
+  QL                 3,748
+  FC                 2,925
+  IT                 1,965
+  FT                 1,588
+  HD                   890
+  JL                   827
+  TB                   117
+  WW                    84
+  UN                    77
+  LS                    14
+  PX                    11
+  JU                     3
+  OB                     2
+  SD                     1
+
+=== SAMPLE RECORDS (first 10) ===
+
+recid=2 level=LE_Collection style=LE_Collection
+  raw: <LS:1.25><SD:128,0,0><PT:24><FC:255,255,0><BC:128,0,0>ΓÇö Welcome to the <UN-><WW:Web,"https://drive.google.com/open?id=1z7mLtCxDptuRV3_fRV9c321nKUubMB_-">Prabhup─üda Portal ΓÇö<UN><PT><FC><BC><EL>
+
+recid=3 level= style=
+  raw: <JU:CN><LS:1><IN:FI:0><OB:".OB";"VedaBase splash 2019-sm.bmp";6.61458;5.08333>
+
+recid=4 level= style=PA_Headersheet
+  raw: <PS:"Headersheet"><FC:128,0,0>Published on the Auspicious Disappearance Day<CR>of Baladeva Vidy─übh┼½ß╣úana<BD+><IT-><CS:"Italic">, June 12th, 2019 <BD><IT><FC></CS>
+
+recid=5 level= style=
+  raw: <JU:CN><LS:1><IN:FI:0><OB:".OB";"Srila Prabhupada Folded Hands.bmp";2.85417;2.1875>
+
+recid=6 level= style=
+  raw: <JU:CN><IN:FI:0><BD+><PT:16><FC:128,0,0>┼Ür─½la Prabhup─üda Tribute<FC:0,0,255><WW:Web,"https://drive.google.com/open?id=1z7mLtCxDptuRV3_fRV9c321nKUubMB_-"><CR><BD><UN-><PT>"26 Second Ave"<BD+><FC:0,0,128> <CR><BD><UN><PT:12><FC><EL><PX:"Popup","InlinePopupText_117">by ß╣¼oß╣¡─ü-gop─½n─ütha D─üsa<CR><EL><PT>
+
+recid=7 level= style=
+  raw: <IN:FI:0><PT:16><FC:255,255,0><BC:0,0,128>  CONTENTS  Summarized              <PT:20><QL:Query,"What's New 2019">ΓÇö<FT:"Times"><PT:16><EL><JL:Jump,"What is New?">What's New in VedaBaseΓÇô2019? <FT><EL>  <PT><FC><BC>
+
+recid=8 level= style=
+  raw: <IN:LF:0.5,FI:0><BD+><FT:"Times"><JL:Jump,"00. Bhaktivedanta VedaBase Front Matter2">B<BD>haktivedanta VedaBase Front Matter<FT><EL>
+
+recid=9 level= style=
+  raw: <IN:LF:0.5,FI:0><BD+><FT:"Times"><JL:Jump,"01. Book Reviews2">B<BD>ook Reviews<FT><EL>
+
+recid=10 level= style=
+  raw: <IN:LF:0.5,FI:0><BD+><IT+><FT:"Times"><JL:Jump,"02. Bhagavad-gita As It Is5">B<BD>hagavad-g─½t─ü As It Is<IT><FT><EL>
+
+recid=11 level= style=
+  raw: <IN:LF:0.5,FI:0><BD+><IT+><FT:"Times"><JL:Jump,"03. Srimad-Bhagavatam2">┼Ü<BD>r─½mad-Bh─ügavatam<IT><FT><EL>
+
+recid=12 level= style=
+  raw: <IN:LF:0.5,FI:0><BD+><IT+><FT:"Times"><JL:Jump,"04. Sri Caitanya-caritamrta2">┼Ü<BD>r─½ Caitanya-carit─ümß╣¢ta<IT><FT><EL>
+
+recid=13 level= style=
+  raw: <IN:LF:0.5,FI:0><BD+><FT:"Times"><JL:Jump,"05. Other Books by Srila Prabhupada3">O<BD>ther Books by ┼Ür─½la Prabhup─üda<FT><EL>
+
+recid=14 level= style=
+  raw: <IN:LF:0.5,FI:0><BD+><FT:"Times"><JL:Jump,"06a. Audio Transcripts, 1966┬ù1977">A<BD->udio Transcripts, <BD>1966ΓÇö1977<FT><EL>
+
+recid=15 level= style=
+  raw: <IN:LF:0.5,FI:0><BD+><FT:"Times"><JL:Jump,"06b. Audio Transcripts, by Topic/ Verse">A<BD->udio Transcripts, <BD>by Subject / Verse<FT><EL>
+
+recid=16 level= style=
+  raw: <IN:LF:0.5,FI:0><BD+><FT:"Times"><JL:Jump,"07. Correspondence  1947┬ù1977">C<BD->orrespondence  1947ΓÇö1977<BD><FT><EL>
